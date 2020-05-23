@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import logo from './logo.svg';
 import "./App.css";
 import Alert from "./components/Alert";
@@ -6,11 +6,9 @@ import ExpenseForm from "./components/ExpenseForm";
 import ExpenseList from "./components/ExpenseList";
 import uuid from "uuid/dist/v4";
 
-const initialExpense = [
-	{ id: uuid(), charge: "rent", amount: 1600 },
-	{ id: uuid(), charge: "card payment", amount: 100 },
-	{ id: uuid(), charge: "card removealt", amount: 2600 },
-];
+const initialExpense = localStorage.getItem("expenses")
+	? JSON.parse(localStorage.getItem("expenses"))
+	: [];
 
 function App() {
 	//****state values******* */
@@ -26,6 +24,13 @@ function App() {
 	// set alert state
 
 	const [alert, setAlert] = useState({ show: false });
+
+	//use effect
+	useEffect(() => {
+		console.log("we called it");
+		localStorage.setItem("expense", JSON.stringify(expenses));
+	}, [expenses]);
+
 	//****  functionality   ******* */
 	//handle charge
 	const handleCharge = (e) => {
